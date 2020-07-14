@@ -1,9 +1,12 @@
+import loader.LoadCities;
 import loader.LoadCountries;
+import loader.LoadCountryLanguages;
 import model.LoaderAgrument;
 import org.apache.ignite.Ignite;
 import org.apache.ignite.IgniteCache;
 import org.apache.ignite.Ignition;
 import org.apache.ignite.binary.BinaryObject;
+import org.apache.ignite.internal.binary.BinaryObjectImpl;
 
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
@@ -19,12 +22,23 @@ public class LoadApp {
             ignite = Ignition.start("clientNodeConfig.xml");
             IgniteCache<String, BinaryObject> countryCache = ignite.cache("countryCache").withKeepBinary();
 
-            LoaderAgrument loadArg = new LoaderAgrument();
-            loadArg.csvFileName = "sampleData/country.csv";
-            loadArg.targetCacheName = "countryCache";
-            ignite.compute().execute(LoadCountries.class,ignite.binary().toBinary(loadArg));
+            LoaderAgrument countryArg = new LoaderAgrument();
+            countryArg.csvFileName = "sampleData/country.csv";
+            countryArg.targetCacheName = "countryCache";
+            BinaryObject binCountryArg=ignite.binary().toBinary(countryArg);
+            ignite.compute().execute(LoadCountries.class,binCountryArg);
 
-            System.out.println("'AFG' --> " + countryCache.get("'AFG'"));
+            LoaderAgrument cityArg = new LoaderAgrument();
+            cityArg.csvFileName = "sampleData/city.csv";
+            cityArg.targetCacheName = "cityCache";
+            BinaryObject binCityArg=ignite.binary().toBinary(cityArg);
+            ignite.compute().execute(LoadCities.class,binCityArg);
+
+            LoaderAgrument languageArg = new LoaderAgrument();
+            languageArg.csvFileName = "sampleData/countryLanguage.csv";
+            languageArg.targetCacheName = "countryLanguageCache";
+            BinaryObject binLanguageArg=ignite.binary().toBinary(languageArg);
+            ignite.compute().execute(LoadCountryLanguages.class,binLanguageArg);
             System.out.println("processing complete");
         } finally {
             Ignition.stop(true);
