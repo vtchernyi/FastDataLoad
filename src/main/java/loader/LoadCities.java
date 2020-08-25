@@ -30,7 +30,6 @@ public class LoadCities extends AbstractLoadTask<BinaryObject> {
                 result.computeIfAbsent(affinity.partition(binKey), k -> new HashMap<>()).put(binKey, binCity);
                 rowCount++;
             }
-            AuxUtils.printElapsedTime("total rows: " + rowCount, startTime);
         }
         return result;
     }

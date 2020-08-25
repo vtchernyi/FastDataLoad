@@ -42,6 +42,7 @@ public abstract class AbstractLoadTask<TargetCacheKeyType> extends ComputeTaskAd
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+        startTime = System.currentTimeMillis();
         for (int partNo : binaries2bSent.keySet()) {
             jobs.put(new RenewLocalCacheJob(targetCacheName,
                             targetCacheName + " " + partNo + "/" + totalPartitions, binaries2bSent.get(partNo)),
@@ -55,11 +56,10 @@ public abstract class AbstractLoadTask<TargetCacheKeyType> extends ComputeTaskAd
     @Override
     public Integer reduce(List<ComputeJobResult> list) throws IgniteException {
         int totalRows = 0;
-        startTime = System.currentTimeMillis();
         for (ComputeJobResult result : list) {
             totalRows += result.<Integer>getData();
         }
-        AuxUtils.printElapsedTime(this.getClass().getSimpleName() + " reduce: " + totalRows, startTime);
+        AuxUtils.printElapsedTime(this.getClass().getSimpleName() + " totalRows = " + totalRows, startTime);
         return totalRows;
     }
 }

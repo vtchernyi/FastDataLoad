@@ -29,7 +29,6 @@ public class LoadCountryLanguages extends AbstractLoadTask<BinaryObject> {
                 BinaryObject binLanguage = node.binary().toBinary(countryLanguage);
                 result.computeIfAbsent(affinity.partition(binLanguage), k -> new HashMap<>()).put(binKey, binLanguage);
             }
-            AuxUtils.printElapsedTime("total rows: " + rowNumber, startTime);
         }
         return result;
     }

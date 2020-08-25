@@ -39,7 +39,6 @@ public class LoadCountries extends AbstractLoadTask<String> {
                 result.computeIfAbsent(affinity.partition(code), k -> new HashMap<>()).put(code, binCountry);
                 rowCount++;
             }
-            AuxUtils.printElapsedTime("total rows: " + rowCount, startTime);
         }
         return result;
     }

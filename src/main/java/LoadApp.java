@@ -6,7 +6,6 @@ import org.apache.ignite.Ignite;
 import org.apache.ignite.IgniteCache;
 import org.apache.ignite.Ignition;
 import org.apache.ignite.binary.BinaryObject;
-import org.apache.ignite.internal.binary.BinaryObjectImpl;
 
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
@@ -25,20 +24,20 @@ public class LoadApp {
             LoaderAgrument countryArg = new LoaderAgrument();
             countryArg.csvFileName = "sampleData/country.csv";
             countryArg.targetCacheName = "countryCache";
-            BinaryObject binCountryArg=ignite.binary().toBinary(countryArg);
-            ignite.compute().execute(LoadCountries.class,binCountryArg);
+            BinaryObject binCountryArg = ignite.binary().toBinary(countryArg);
+            ignite.compute().execute(LoadCountries.class, binCountryArg);
 
             LoaderAgrument cityArg = new LoaderAgrument();
             cityArg.csvFileName = "sampleData/city.csv";
             cityArg.targetCacheName = "cityCache";
-            BinaryObject binCityArg=ignite.binary().toBinary(cityArg);
-            ignite.compute().execute(LoadCities.class,binCityArg);
+            BinaryObject binCityArg = ignite.binary().toBinary(cityArg);
+            ignite.compute().execute(LoadCities.class, binCityArg);
 
             LoaderAgrument languageArg = new LoaderAgrument();
             languageArg.csvFileName = "sampleData/countryLanguage.csv";
             languageArg.targetCacheName = "countryLanguageCache";
-            BinaryObject binLanguageArg=ignite.binary().toBinary(languageArg);
-            ignite.compute().execute(LoadCountryLanguages.class,binLanguageArg);
+            BinaryObject binLanguageArg = ignite.binary().toBinary(languageArg);
+            ignite.compute().execute(LoadCountryLanguages.class, binLanguageArg);
             System.out.println("processing complete");
         } finally {
             Ignition.stop(true);
